@@ -29,16 +29,14 @@ namespace Task1
         {
             if (File.Exists(newPath))
                 File.Delete(newPath);
-            using (FileStream fileStream = File.Open(newPath, FileMode.Create))
+            using (FileStream fileStream = File.Open(newPath+"1.txt", FileMode.Create))
             {
                 using (StreamWriter streamWriter = new StreamWriter(fileStream))
                 {
                     foreach (var file in Directory.EnumerateFiles(path, "*.txt", SearchOption.TopDirectoryOnly))
                     {
-
                         var s = File.ReadAllText(file);
                         streamWriter.Write(string.Join(Environment.NewLine, s));
-
                     }
 
                 }
@@ -49,7 +47,7 @@ namespace Task1
             if (File.Exists(newPath))
                 File.Delete(newPath);
             int count = 0;
-            using (FileStream fileStream = File.Open(newPath, FileMode.Create))
+            using (FileStream fileStream = File.Open(newPath + "1.txt", FileMode.Create))
             {
                 using (StreamWriter streamWriter = new StreamWriter(fileStream))
                 {
@@ -74,13 +72,13 @@ namespace Task1
             Console.WriteLine(count + "number of deleted");
         }
         //создание 100 файлов
-        public static void Create100()
+        public static void Create100(string path)
         {
             RandomStrings myString = new RandomStrings();
             int i = 0;
             Parallel.For(1, 100, (k) =>
             {
-                using (FileStream fileStream = File.Open($@"C:\Users\dsdsd\source\repos\Task1\Task1\100txtFiles\{++i}.txt", FileMode.Create, FileAccess.Write, FileShare.Write))
+                using (FileStream fileStream = File.Open($@"path+{++i}.txt", FileMode.Create, FileAccess.Write, FileShare.Write))
                 {
                     using (StreamWriter streamWriter = new StreamWriter(fileStream))
                     {

@@ -1,10 +1,14 @@
 ﻿using Task1;
 
-int a = 0;
-Console.WriteLine(" input  path to 100 files");
-string pathTo100 = Console.ReadLine() ?? "C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\100txtFiles\\";
-Console.WriteLine(" input  path to 1 files");
-string pathTo1 = Console.ReadLine() ?? @"C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\1txtFiles\\1txt\";
+int a = 0; string pathTo100; string pathTo1;
+while (true)
+{
+    Console.WriteLine(" input  path to 100 files");
+    pathTo100 = @Console.ReadLine() ?? "C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\100txtFiles\\";
+    Console.WriteLine(" input  path to 1 files");
+    pathTo1 = @Console.ReadLine() ?? @"C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\1txtFiles\\1txt\";
+    if (Directory.Exists(pathTo100) && Directory.Exists(pathTo1)) { break; }
+}
 do
 {
 
@@ -20,7 +24,7 @@ do
     switch (a)
     {
         case 1://создание 100 файлов
-            WorkingWithFile.Create100();
+            WorkingWithFile.Create100(pathTo100);
             Console.WriteLine("successfully");
             break;
         case 2://слияние файлов в 1, либо с удалением строк с определенным словом, либо без удаления. 
