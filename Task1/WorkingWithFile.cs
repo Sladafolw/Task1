@@ -78,7 +78,7 @@ namespace Task1
             int i = 0;
             Parallel.For(1, 100, (k) =>
             {
-                using (FileStream fileStream = File.Open($@"path+{++i}.txt", FileMode.Create, FileAccess.Write, FileShare.Write))
+                using (FileStream fileStream = File.Open($@"{path}+{++i}.txt", FileMode.Create, FileAccess.Write, FileShare.Write))
                 {
                     using (StreamWriter streamWriter = new StreamWriter(fileStream))
                     {
