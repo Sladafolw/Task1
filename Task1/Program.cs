@@ -1,6 +1,10 @@
 ﻿using Task1;
 
 int a = 0;
+Console.WriteLine(" input  path to 100 files");
+string pathTo100 = Console.ReadLine() ?? "C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\100txtFiles\\";
+Console.WriteLine(" input  path to 1 files");
+string pathTo1 = Console.ReadLine() ?? @"C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\1txtFiles\\1txt\";
 do
 {
 
@@ -15,21 +19,38 @@ do
     }
     switch (a)
     {
-        case 1:
+        case 1://создание 100 файлов
             WorkingWithFile.Create100();
             Console.WriteLine("successfully");
             break;
-        case 2:
-            WorkingWithFile.Create100();
-            Console.WriteLine("successfully");
+        case 2://слияние файлов в 1, либо с удалением строк с определенным словом, либо без удаления. 
+            Console.WriteLine("If you want delete lines with your word input 1 else input 2");
+            int i = Convert.ToInt32(Console.ReadLine());
+            if (i == 1)
+            {
+                Console.WriteLine("input your Word");
+                string word = Console.ReadLine() ?? "afaf";
+                WorkingWithFile.MergeFilesToOne(pathTo100, word, pathTo1);
+            }
+            else
+            {
+                WorkingWithFile.MergeFilesToOne(pathTo100, null, pathTo1);
+
+            }
             break;
-        case 3:
-            WorkingWithFile.Create100();
-            Console.WriteLine("successfully");
+        case 3:// Вызов  функции записи файлов в бд
+            WorkingWithDataBase.ReadFromFilesAndWrite(pathTo100);
             break;
-        case 4:
-            WorkingWithFile.Create100();
-            Console.WriteLine("successfully");
+        case 4:// Вызов функции с выполнением хранимой процедуры
+            try
+            {
+                WorkingWithDataBase.AvgAndSum();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+            }
+
             break;
         case 5:
             Environment.Exit(1);
