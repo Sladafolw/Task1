@@ -4,12 +4,20 @@ using Task1.Models;
 
 namespace Task1
 {
-    internal static class WorkingWithDataBase
+    internal class WorkingWithDataBase
     {
-        // executing a stored procedure
-        public static void AvgAndSum()
+        public delegate void FileHandler(string message);
+       public event FileHandler? Notify;
+
+        public static void Message(string message) 
         {
-            using Task1DataBaseContext db = new ();
+            Console.WriteLine(message);
+        }
+
+        // executing a stored procedure
+        public void AvgAndSum()
+        {
+            using Task1DataBaseContext db = new();
             using System.Data.Common.DbCommand command = db.Database.GetDbConnection().CreateCommand();
             command.CommandText = "dbo.AvgAndSum";
             command.CommandType = CommandType.StoredProcedure;
@@ -27,36 +35,38 @@ namespace Task1
         }
 
         // function to write files to database
-        public static void ReadFromFilesAndWrite(string path)
+        public void ReadFromFilesAndWrite(string path)
         {
-            using Task1DataBaseContext db = new ();
-            foreach (string file in Directory.EnumerateFiles(path, "*.txt", SearchOption.TopDirectoryOnly))
+            using (Task1DataBaseContext db = new())
             {
-                Models.File file1 = new ();
-                int count = System.IO.File.ReadLines(file).Count();
-                file1.FileName = new FileInfo(file).Name;
-                db.Update(file1);
-                db.SaveChanges();
-                using StreamReader streamReader = new (file);
-                while (!streamReader.EndOfStream)
+                foreach (string file in Directory.EnumerateFiles(path, "*.txt", SearchOption.TopDirectoryOnly))
                 {
-                    string? s = streamReader.ReadLine();
-                    string[] text = s.Split("||");
-                    Models.Line line = new ()
+                    Models.File file1 = new();
+                    int count = System.IO.File.ReadLines(file).Count();
+                    file1.FileName = new FileInfo(file).Name;
+                    db.Update(file1);
+                    db.SaveChanges();
+                    using StreamReader streamReader = new(file);
+                    while (!streamReader.EndOfStream)
                     {
-                        Date = DateTime.Parse(text[0]),
-                        EngLetters = text[1],
-                        RuLetters = text[2],
-                        RandomInt = int.Parse(text[3]),
-                        RandomFractional = float.Parse(text[4]),
-                        FileId = file1.FileId,
-                    };
-                    db.Add(line);
-                    Console.WriteLine($"number of lines left {count--}, file name = {file1.FileName}");
-                }
+                        string? s = streamReader.ReadLine();
+                        string[] text = s.Split("||");
+                        Models.Line line = new()
+                        {
+                            Date = DateTime.Parse(text[0]),
+                            EngLetters = text[1],
+                            RuLetters = text[2],
+                            RandomInt = int.Parse(text[3]),
+                            RandomFractional = float.Parse(text[4]),
+                            FileId = file1.FileId,
+                        };
+                        db.Add(line);
+                        Notify?.Invoke($"number of lines left {count--}, file name = {file1.FileName}");
+                    }
 
-                Console.WriteLine($"saving process in progress");
-                db.SaveChanges();
+                    Console.WriteLine($"saving process in progress");
+                    db.SaveChanges();
+                }
             }
         }
     }

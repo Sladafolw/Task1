@@ -1,8 +1,10 @@
 ﻿using Task1;
 
 int a = 0;
-string pathTo100 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../100txtFiles");
-string pathTo1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../1txtFiles");
+string pathTo100 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../100txtFiles/");
+string pathTo1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../1txtFiles/");
+WorkingWithDataBase workingWithDataBase = new WorkingWithDataBase();
+workingWithDataBase.Notify += (string message) => Console.WriteLine(message);
 do
 {
     Console.WriteLine(" input 1 if you want create 100 files,\n input 2 if you want merge files to one,\n input 3 if you want add data to sql,\n input 4 if you want calculate sum of all integers and median of fractional numbers,\n input 5 to Close");
@@ -25,7 +27,16 @@ do
         case 2:
             // merging files into 1, either with deletion of lines with a certain word, or without deletion.
             Console.WriteLine("If you want delete lines with your word input 1 else input 2");
-            int i = Convert.ToInt32(Console.ReadLine());
+            int i = 0;
+            try
+            {
+                i = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
             if (i == 1)
             {
                 Console.WriteLine("input your Word");
@@ -40,13 +51,13 @@ do
             break;
         case 3:
             // Calling the function of writing files to the database
-            WorkingWithDataBase.ReadFromFilesAndWrite(pathTo100);
+            workingWithDataBase.ReadFromFilesAndWrite(pathTo100);
             break;
         case 4:
             // Calling a Function with Executing a Stored Procedure
             try
             {
-                WorkingWithDataBase.AvgAndSum();
+                workingWithDataBase.AvgAndSum();
             }
             catch (Exception ex)
             {
