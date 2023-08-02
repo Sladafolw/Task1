@@ -1,17 +1,10 @@
 ﻿using Task1;
 
-int a = 0; string pathTo100; string pathTo1;
-while (true)
-{
-    Console.WriteLine(" input  path to 100 files");
-    pathTo100 = @Console.ReadLine() ?? "C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\100txtFiles\\";
-    Console.WriteLine(" input  path to 1 files");
-    pathTo1 = @Console.ReadLine() ?? @"C:\\Users\\dsdsd\\source\\repos\\Task1\\Task1\\1txtFiles\\1txt\";
-    if (Directory.Exists(pathTo100) && Directory.Exists(pathTo1)) { break; }
-}
+int a = 0;
+string pathTo100 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../100txtFiles");
+string pathTo1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../1txtFiles");
 do
 {
-
     Console.WriteLine(" input 1 if you want create 100 files,\n input 2 if you want merge files to one,\n input 3 if you want add data to sql,\n input 4 if you want calculate sum of all integers and median of fractional numbers,\n input 5 to Close");
     try
     {
@@ -21,13 +14,16 @@ do
     {
         Console.WriteLine(ex);
     }
+
     switch (a)
     {
-        case 1://создание 100 файлов
+        case 1:
+            // creating 100 files
             WorkingWithFile.Create100(pathTo100);
             Console.WriteLine("successfully");
             break;
-        case 2://слияние файлов в 1, либо с удалением строк с определенным словом, либо без удаления. 
+        case 2:
+            // merging files into 1, either with deletion of lines with a certain word, or without deletion.
             Console.WriteLine("If you want delete lines with your word input 1 else input 2");
             int i = Convert.ToInt32(Console.ReadLine());
             if (i == 1)
@@ -39,20 +35,22 @@ do
             else
             {
                 WorkingWithFile.MergeFilesToOne(pathTo100, null, pathTo1);
-
             }
+
             break;
-        case 3:// Вызов  функции записи файлов в бд
+        case 3:
+            // Calling the function of writing files to the database
             WorkingWithDataBase.ReadFromFilesAndWrite(pathTo100);
             break;
-        case 4:// Вызов функции с выполнением хранимой процедуры
+        case 4:
+            // Calling a Function with Executing a Stored Procedure
             try
             {
                 WorkingWithDataBase.AvgAndSum();
             }
             catch (Exception ex)
             {
-                Console.WriteLine();
+                Console.WriteLine(ex);
             }
 
             break;

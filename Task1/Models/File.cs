@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Task1.Models;
+﻿namespace Task1.Models;
 
 public partial class File
 {
